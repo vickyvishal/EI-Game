@@ -4,7 +4,7 @@
  * render methods on your player and enemy objects (defined in your app.js).
  *
  * A game engine works by drawing the entire game screen over and over, kind of
- * like a flipbook.When player moves across
+ * like a flipbook you may have created as a kid. When your player moves across
  * the screen, it may look like just that image/character is moving or being
  * drawn but that is not the case. What's really happening is the entire "scene"
  * is being drawn over and over, presenting the illusion of animation.
@@ -80,7 +80,7 @@ var Engine = (function(global) {
         main();
     }
 
-    /* This function is called by main (o game loop) and itself calls all
+    /* This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. Based on how
      * you implement your collision detection (when two entities occupy the
      * same space, for instance when your character should die), you may find
@@ -184,7 +184,7 @@ var Engine = (function(global) {
          * the render function you have defined.
          */
 		var Cannon = 'images/Wheel-base.png';
-		ctx.drawImage(Resources.get(Cannon), 70, 302,70,70);
+		ctx.drawImage(Resources.get(Cannon), 80, 302,70,70);
 		
 		var obstructionImage = 'images/obstruction.png';
 		ctx.drawImage(Resources.get(obstructionImage), 220, 192, 200, 200);
