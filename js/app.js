@@ -126,8 +126,8 @@ Laser.prototype.render = function(){
 Laser.prototype.update = function(dt){
 	this.vx = this.velocity * Math.cos(TO_RADIANS(this.angle));
 	this.vy = this.velocity * Math.sin(TO_RADIANS(this.angle));
-	this.x += this.velocity*dt;
-	this.y += this.velocity*dt - 4.9*dt*dt;//0.5*9.8
+	this.x += this.vx*dt;
+	this.y += this.vy*dt - 4.9*dt*dt;//0.5*9.8
 	this.angle += this.angleV; 
 
     if (this.y <= obstruction.height) {
