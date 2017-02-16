@@ -65,6 +65,7 @@ var CannonMuzzle = function(x,y,angle,angleV,data){
 	this.angleV = angleV;
 	this.radius = 30;
 	this.targetPosition = data;
+	this.score = 0;
 };
 
 CannonMuzzle.prototype.render = function(){ // render the player ship
@@ -117,6 +118,7 @@ Laser.prototype.render = function(){
 	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 	ctx.restore();
 };
+
 Laser.prototype.update = function(dt){
 	this.x += this.velocity*dt;
 	this.y += this.velocity*dt - 4.9*dt*dt;//0.5*9.8
