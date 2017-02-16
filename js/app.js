@@ -123,20 +123,13 @@ Laser.prototype.update = function(dt){
 	this.angle += this.angleV; 
 
     if (this.y <= obstruction.height) {
-		this.lives--; // reset to top of screen
+		this.lives--; 
 	} else if(this.x == this.targetPosition){
 		cannonMuzzle.score += 10;
 		document.getElementsByClassName('Score')[0].innerHTML = 'Score: ' + cannonMuzzle.score;
 	}
 };
-Laser.prototype.collide = function(otherObj){ 	// checks if laser hits rocks
-	var distance = distToObj(this.x, this.y, otherObj.x, otherObj.y);
-	if (distance < (this.radius + otherObj.radius)){
-		return true;
-	} else {
-		return false;
-	}
-};
+
 
 document.addEventListener('keyup', function(e) {
     var allowedKeys = { // do a meme on it
