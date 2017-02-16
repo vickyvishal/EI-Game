@@ -1,2 +1,2 @@
 # EI-Game
-A assignment for EI
+A game with projectile motion logic.
