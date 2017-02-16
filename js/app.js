@@ -16,6 +16,10 @@ var obstructionHeight = 200;
 
 var TO_RADIANS = Math.PI / 180; // use this to multiply an object to radians
 
+var angleToVector = function(angle){	// Converts angle to vector to be used for velocity
+	return [Math.cos(angle), Math.sin(angle)];
+};
+
 var Target = function(x1,x2,y) {
 
 	// Set the image for the target
@@ -120,6 +124,8 @@ Laser.prototype.render = function(){
 };
 
 Laser.prototype.update = function(dt){
+	this.vx = this.velocity * Math.cos(TO_RADIANS(this.angle));
+	this.vy = this.velocity * Math.sin(TO_RADIANS(this.angle));
 	this.x += this.velocity*dt;
 	this.y += this.velocity*dt - 4.9*dt*dt;//0.5*9.8
 	this.angle += this.angleV; 
