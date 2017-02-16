@@ -15,10 +15,19 @@ var laserim = 'images/shot.png';
 var obstructionHeight = 200;
 
 var TO_RADIANS = Math.PI / 180; // use this to multiply an object to radians
+var playerinfo = new ImageInfo(0, 0, 99, 99, 40);
 
 var angleToVector = function(angle){	// Converts angle to vector to be used for velocity
 	return [Math.cos(angle), Math.sin(angle)];
 };
+
+function ImageInfo(centerX, centerY, width, height, radius, lifespan) {	// gathers info for images so it's easier to reference data
+	this.centerX = centerX;
+	this.centerY = centerY;
+	this.width = width;
+	this.height = height;
+	this.radius = radius;
+}
 
 var Target = function(x1,x2,y) {
 
@@ -61,10 +70,10 @@ Target.prototype.render = function(now) {
 };
 
 
-var CannonMuzzle = function(x,y,angle,angleV,data){
+var CannonMuzzle = function(angle,angleV,data){
 	this.sprite = 'images/muzzle.png';
-	this.x = x;
-	this.y = y;
+	this.x = 165;
+	this.y = 337;
 	this.angle = angle;
 	this.angleV = angleV;
 	this.radius = 30;
@@ -72,18 +81,19 @@ var CannonMuzzle = function(x,y,angle,angleV,data){
 	this.score = 0;
 };
 
-CannonMuzzle.prototype.render = function(){ // render the player ship
-	//ctx.save();
-	//ctx.translate(this.x, this.y);
-	//ctx.rotate(this.angle * TO_RADIANS);
-	ctx.drawImage(Resources.get(this.sprite), this.x, this.y, 100, 100);
-	//ctx.restore();
+CannonMuzzle.prototype.render = function(){ // render the player ship 
+	ctx.save();
+	ctx.translate(this.x, this.y);
+	ctx.rotate(this.angle * TO_RADIANS);
+	ctx.drawImage(Resources.get(this.sprite), -playerinfo.centerX, -playerinfo.centerY, playerinfo.width, playerinfo.height);
+	console.log(ctx.rotate);
+	ctx.restore();
 };
 
-CannonMuzzle.prototype.update = function(dir){
-	if (dir == 'up') { // left rotation updated via angular rotation
+CannonMuzzle.prototype.update = function(dt){
+	if (37 in keysDown) { // left rotation updated via angular rotation
 		this.angleV = -5;
-	} else if (dir =='down') { // right rotation
+	} else if (39 in keysDown) { // right rotation
 		this.angleV = +5;
 	} else {
 		this.angleV = 0;
@@ -139,21 +149,28 @@ Laser.prototype.update = function(dt){
 	}
 };
 
+var keysDown = {};
+var checkTime = 0;
 
-document.addEventListener('keyup', function(e) {
-    var allowedKeys = { // do a meme on it
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down',
-		27: 'escape'
-    };
-
-    cannonmuzzle.update(allowedKeys[e.keyCode]);
-});
+addEventListener("keydown", function (e) {
+	keysDown[e.keyCode] = true;
+	var currentTime = new Date();
+	console.log(keysDown);
+	switch(e.keyCode){
+		case 37: case 39: case 38:  case 40: // arrow keys
+		case 32: e.preventDefault(); break; // space
+		default: break; // do not block other keys
+	}
+	if (e.keyCode == 32) {
+		if ((currentTime.getTime() - checkTime) > 200){ //add time delay to prevent spamming
+			player.shoot();
+			checkTime = currentTime.getTime();
+		}
+	}
+}, false);
 
 //Target instantiation
 var target = new Target(400, 500, 250);
-var cannonmuzzle = new CannonMuzzle(65,240,90,90,target.move);
+var cannonmuzzle = new CannonMuzzle(180,180,target.move);
 
 var game = new Game();
