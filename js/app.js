@@ -73,11 +73,11 @@ var CannonMuzzle = function(x,y,angle,angleV,data){
 };
 
 CannonMuzzle.prototype.render = function(){ // render the player ship
-	ctx.save();
-	ctx.translate(this.x, this.y);
-	ctx.rotate(this.angle * TO_RADIANS);
-	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-	ctx.restore();
+	//ctx.save();
+	//ctx.translate(this.x, this.y);
+	//ctx.rotate(this.angle * TO_RADIANS);
+	ctx.drawImage(Resources.get(this.sprite), this.x, this.y, 100, 100);
+	//ctx.restore();
 };
 
 CannonMuzzle.prototype.update = function(dir){
@@ -154,6 +154,6 @@ document.addEventListener('keyup', function(e) {
 
 //Target instantiation
 var target = new Target(400, 500, 250);
-var cannonmuzzle = new CannonMuzzle(70,392,0,0,target.move);
+var cannonmuzzle = new CannonMuzzle(65,240,90,90,target.move);
 
 var game = new Game();
