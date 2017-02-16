@@ -132,6 +132,7 @@ Laser.prototype.update = function(dt){
 
     if (this.y <= obstruction.height) {
 		this.lives--; 
+		document.getElementsByClassName('lives')[0].innerHTML = 'lives: ' + this.lives;
 	} else if(this.x == this.targetPosition){
 		cannonMuzzle.score += 10;
 		document.getElementsByClassName('Score')[0].innerHTML = 'Score: ' + cannonMuzzle.score;
