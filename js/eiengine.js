@@ -24,16 +24,10 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
 
-    canvas.width = 640;
-    canvas.height = 384;
+    canvas.width = 707;
+    canvas.height = 606;
     doc.body.appendChild(canvas);
 	
-	var background = new Image();
-	background.src = "images/background.jpg";
-	
-	background.onload = function(){
-		ctx.drawImage(background,0,0);
-	}
 	
 	canvas.style.border = "1px solid black";
 
@@ -122,6 +116,49 @@ var Engine = (function(global) {
      * they are just drawing the entire screen over and over.
      */
     function render() {
+		
+		var rowImages = [
+                'images/water-block.png',
+                'images/stone-block.png',   // Row 1 of 3 of stone
+                'images/stone-block.png',   // Row 2 of 3 of stone
+                'images/stone-block.png',   // Row 3 of 3 of stone
+                'images/grass-block.png',   // Row 1 of 2 of grass
+                'images/grass-block.png'    // Row 2 of 2 of grass
+            ],
+            topRowImages = [
+                'images/water-block.png',   // top row has special images
+                'images/stone-block-orange.png',
+                'images/stone-block-orange.png',
+                'images/stone-block-orange.png',
+                'images/stone-block-orange.png',
+                'images/stone-block-orange.png',
+                'images/water-block.png'
+            ],
+            numRows = 6,
+            numCols = 7,
+            row, col;
+
+        /* Loop through the number of rows and columns we've defined above
+         * and, using the rowImages array, draw the correct image for that
+         * portion of the "grid"
+         */
+        for (row = 0; row < numRows; row++) {
+            for (col = 0; col < numCols; col++) {
+                /* The drawImage function of the canvas' context element
+                 * requires 3 parameters: the image to draw, the x coordinate
+                 * to start drawing and the y coordinate to start drawing.
+                 * We're using our Resources helpers to refer to our images
+                 * so that we get the benefits of caching these images, since
+                 * we're using them over and over.
+                 */
+                if (row===0) {
+                    ctx.drawImage(Resources.get(topRowImages[col]), col * 101, row * 83);
+                } else {
+                    ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                }
+
+            }
+        }
         renderEntities();
 	}
 
@@ -150,7 +187,7 @@ var Engine = (function(global) {
 		ctx.drawImage(Resources.get(Cannon), 70, 302,70,70);
 		
 		var obstructionImage = 'images/obstruction.png';
-		ctx.drawImage(Resources.get(obstructionImage), 120, 192);
+		ctx.drawImage(Resources.get(obstructionImage), 220, 192, 200, 200);
 		
 		lasers.forEach(function(laser) {
                 laser.render();
@@ -164,6 +201,11 @@ var Engine = (function(global) {
 
     Resources.load([
         'images/game-over.svg',
+		'images/grass-block.png',
+		'images/stone-block-orange.png',
+		'images/water-block.png',
+		'images/water-block.png',
+		'images/stone-block.png',
         'images/win-game.svg',
 		'images/Target-Bin.png',
 		'images/Wheel-base.png',
