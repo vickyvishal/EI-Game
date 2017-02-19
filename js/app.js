@@ -71,34 +71,35 @@ Target.prototype.render = function(now) {
 
 
 var CannonMuzzle = function(angle,angleV,data){
-	this.sprite = 'images/muzzle.png';
-	this.x = 165;
-	this.y = 337;
-	this.angle = angle;
-	this.angleV = angleV;
+	this.x = 115;//this is the xcenter of the rotation
+	this.y = 337;//this is the ycenter of the rotation
+	this.angle = TO_RADIANS * angle;
+	this.angleV = TO_RADIANS * angleV;
 	this.radius = 30;
 	this.targetPosition = data;
 	this.score = 0;
 };
 
 CannonMuzzle.prototype.render = function(){ // render the player ship 
-	ctx.save();
-	ctx.translate(this.x, this.y);
-	ctx.rotate(this.angle * TO_RADIANS);
-	ctx.drawImage(Resources.get(this.sprite), -playerinfo.centerX, -playerinfo.centerY, playerinfo.width, playerinfo.height);
-	console.log(ctx.rotate);
-	ctx.restore();
+	ctx.lineWidth = 7;
+	ctx.beginPath();
+	ctx.moveTo(this.x, this.y);
+	ctx.lineTo(this.x + 90 * Math.cos(this.angle), this.y + 90 * Math.sin(this.angle));
+	ctx.stroke();
+	ctx.closePath();
 };
 
-CannonMuzzle.prototype.update = function(dt){
-	if (37 in keysDown) { // left rotation updated via angular rotation
-		this.angleV = -5;
-	} else if (39 in keysDown) { // right rotation
-		this.angleV = +5;
+CannonMuzzle.prototype.update = function(){
+	if (37 == pressedKey) { // left rotation updated via angular rotation
+		//console.log('uu');
+		this.angleV += TO_RADIANS * -1;
+		pressedKey=0;
+	} else if (39 == pressedKey) { // right rotation
+		this.angleV += TO_RADIANS * 1;
+		pressedKey=0;
 	} else {
 		this.angleV = 0;
 	}
-
 	this.angle += this.angleV; 	// update ang
 };
 
@@ -151,11 +152,12 @@ Laser.prototype.update = function(dt){
 
 var keysDown = {};
 var checkTime = 0;
+var pressedKey = 0;
 
 addEventListener("keydown", function (e) {
 	keysDown[e.keyCode] = true;
+	pressedKey = e.keyCode;
 	var currentTime = new Date();
-	console.log(keysDown);
 	switch(e.keyCode){
 		case 37: case 39: case 38:  case 40: // arrow keys
 		case 32: e.preventDefault(); break; // space
@@ -171,6 +173,6 @@ addEventListener("keydown", function (e) {
 
 //Target instantiation
 var target = new Target(400, 500, 250);
-var cannonmuzzle = new CannonMuzzle(180,180,target.move);
+var cannonmuzzle = new CannonMuzzle(0,0,target.move);
 
 var game = new Game();
